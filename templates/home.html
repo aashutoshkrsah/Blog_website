@@ -1,0 +1,91 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+
+    {% comment %} Hero section with featured posts {% endcomment %}
+    {% for post in featured_post  %}
+      {% if forloop.first %}
+        <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark" style="background-image: url({{post.blog_image.url}});background-blend-mode: overlay;background-size:cover;">
+            <div class="col-md-8 px-0">
+              <h1 class="display-4 font-italic"><a href="{% url "blogs" post.slug %}" class="text-white no-underline hover:underline">{{post.title}}</a></h1>
+              <p class="lead my-3">{{post.short_description | truncatewords:15 }}</p>
+              <p class="lead mb-0"><a href="#" class="text-white font-weight-bold">Continue reading...</a></p>
+            </div>
+        </div>
+      {% endif %}
+    {% endfor %} 
+
+    
+    
+    
+      
+      
+
+{% comment %} featured post {% endcomment %}
+
+<h3 class="text-uppercase text-center fw-bold"
+    style="color: #28a745; font-size: 2rem; letter-spacing: 3px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin-top: 30px; margin-bottom: 20px;">
+    🌟 Featured Post 🌟
+</h3>
+
+<!-- Featured Posts Section -->
+<div class="container my-5">
+
+  <div class="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
+    {% for post in featured_post %}
+      {% if not forloop.first %}
+        <div class="col">
+          <div class="card featured-card h-100">
+            <div class="card-body">
+              <h5 class="card-title"><a href="{% url "blogs" post.slug %}">{{ post.title }}</a></h5>
+              <small class="text-muted">{{ post.created_at| timesince }} ago | {{ post.author }}</small>
+              <p class="card-text mt-2">{{ post.short_description | truncatewords:15 }}</p>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<!-- recent Posts Section -->
+<h3 class="text-uppercase text-center fw-bold recent-post-heading">
+  🌟 Recent Post 🌟
+</h3>
+
+<main role="main" class="container p-0">
+  <div class="row">
+    <div class="col-md-8 blog-main">
+      {% for post in posts %}
+        <div class="blog-post">
+          <h3 class="post-title"><a href="{% url "blogs" post.slug %}">{{ post.title }}</a></h3>
+          <small class="post-meta text-muted">{{ post.created_at|timesince }} ago | {{ post.author }}</small>
+          <p class="card-text">{{ post.short_description | truncatewords:15 }}</p>
+        </div>
+      {% endfor %}
+    </div>
+    <!-- /.blog-post -->
+
+    <aside class="col-md-4 blog-sidebar">
+      <div class="p-3 mb-3 sidebar-box bg-light rounded text-center">
+        <h4 class="font-italic">About</h4>
+        <p class="mb-0">Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+      </div>
+
+      <div class="p-3 mb-3 border bg-white rounded text-center">
+        <h4 class="font-italic">Follow Us</h4>
+        <ol class="list-unstyled">
+          <li><a href="#">GitHub</a></li>
+          <li><a href="#">LinkedIn</a></li>
+        </ol>
+      </div>
+      
+      
+      
+    </aside><!-- /.blog-sidebar -->
+
+  </div><!-- /.row -->
+
+</main><!-- /.container -->
+
+{% endblock %}

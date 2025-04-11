@@ -1,0 +1,20 @@
+<nav class="col-md-3 col-lg-2 d-md-block bg-white shadow-sm rounded-end py-4 px-3" role="navigation" aria-orientation="vertical">
+    <div class="text-center mb-4">
+        <h5 class="fw-bold text-primary">Admin Panel</h5>
+        <hr class="mb-0">
+    </div>
+    <div class="nav flex-column">
+        <a class="nav-link text-dark fw-semibold mb-3 rounded text-center shadow-sm {% if request.path == '/dashboard/' %}bg-warning{% endif %}" href="{% url 'dashboard' %}">
+            Dashboard
+        </a>
+        <a class="nav-link text-dark fw-semibold mb-3 rounded text-center shadow-sm {% if '/categories/' in request.path %}bg-warning{% endif %}" href="{% url 'categories' %}">
+            Categories
+        </a>
+        <a class="nav-link text-dark fw-semibold mb-3 rounded text-center shadow-sm {% if '/post/' in request.path %}bg-warning{% endif %}" href="{% url 'dashboard' %}">
+            Post
+        </a>
+        <a class="nav-link text-dark fw-semibold rounded text-center shadow-sm {% if '/logout/' in request.path %}bg-warning{% endif %}" href="{% url 'dashboard' %}">
+            Logout
+        </a>
+    </div>
+</nav>

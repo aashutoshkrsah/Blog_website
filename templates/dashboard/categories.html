@@ -1,0 +1,46 @@
+{% extends "../base/base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+
+        {# Sidebar Navigation - Stylish Boxed Look #}
+       {% include "dashboard/leftsidebar.html" %}
+
+        {# Main Content Area #}
+        <main class="col-md-9 col-lg-10 px-4 py-4 bg-light">
+          <h3>All Categories</h3>
+          <a href="{% url 'add_categories' %}" class="btn btn-dark text-light float-right mb-2">Add New Category</a>
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th >ID</th>
+                    <th >CATEGORIES</th>
+                    <th >CREATED AT</th>
+                    <th >UPDATED AT</th>
+                    <th >ACTION</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for cat in categories  %}
+                  <tr>
+                    <th>{{forloop.counter}}</th>
+                    <td>{{cat.category_name}}</td>
+                    <td>{{cat.created_at}}</td>
+                    <td>{{cat.updated_at}}</td>
+                    <td><a href="{% url 'edit_categories' cat.id %}"><i class=" fa fa-edit text-success"></i></a> &nbsp; &nbsp;
+                        <a href="{% url 'delete_categories' cat.id %}"><i class=" fa fa-trash text-danger"></i></a></td>
+                  </tr>
+                  {% endfor %}
+                 
+                </tbody>
+              </table>
+        </main>
+
+    </div>
+</div>
+
+
+{% endblock %}
+
+
