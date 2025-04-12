@@ -18,7 +18,7 @@ def register(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('register')
+            return redirect('login')
     else:
         form = RegistrationForm()
         
@@ -36,7 +36,7 @@ def login(request):
             
             if user is not None:
                 auth.login(request, user)
-                return redirect('home')
+                return redirect('dashboard')
     else:
         form = AuthenticationForm()
         
@@ -46,28 +46,6 @@ def login(request):
 def user_logout(request):
     logout(request)  # Log out the user
     return redirect('login')  # Redirect to the login page (or wherever you want)
-
-# def create_post(request):
-#     if request.method == 'POST':
-#         title = request.POST.get('title')
-#         category = request.POST.get('category')
-#         image = request.FILES.get('blog_image')
-#         short_description = request.POST.get('shortDesc')
-#         long_description = request.POST.get('longDesc')
-        
-#         blog = Blogs.objects.create(
-#             title=title,
-#             category=category,
-#             author=request.user,
-#             blog_image=image,
-#             short_description=short_description,
-#             blog_body=long_description,
-#             status='published',
-#             is_featured=False
-#         )
-    
-    
-        
     return render(request, 'create_post.html')
 
 def edit_post(request):

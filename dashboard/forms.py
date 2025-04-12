@@ -17,3 +17,10 @@ class AddUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'username', 'email', 'is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')
+        
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        if commit:
+            user.save()
+            self.save_m2m()  # this is crucial for groups and permissions
+        return user

@@ -23,6 +23,55 @@
                     <p class="fs-5 mb-4">{{single_post.short_description}}</p>
                     <p class="fs-5 mb-4">{{single_post.blog_body}}</p>
                     </section>
+                
+                    <!-- Comment Form -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Leave a Comment</h5>
+                        </div>
+
+                        {% if user.is_authenticated %}
+                            <div class="card-body">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="comment" class="form-label">Your Comment</label>
+                                        <textarea name="comment" id="comment" class="form-control" rows="4" placeholder="Write something..." required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Post Comment</button>
+                                </form>
+                            </div>
+                        {% else %}
+                            <div class="card-body">
+                                <div class="alert alert-warning fw-bold text-center p-4 border border-warning rounded">
+                                    <i class="fa fa-exclamation-circle me-2 text-warning"></i>
+                                    Please 
+                                    <a href="{% url 'login' %}" class="text-decoration-none fw-bold text-primary">
+                                        <i class="fa fa-sign-in-alt me-1"></i>Login
+                                    </a>
+                                    to leave a comment.
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- View Comments -->
+                    <h5 class="mb-3 mt-5">Comments ({{ comments_counts }})</h5>
+                    {% for comment in comments %}
+                        <div class="card mb-3 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="mb-0 text-dark">{{ comment.user }}</h6>
+                                    <small class="text-muted">{{ comment.created_at|timesince }} ago</small>
+                                </div>
+                                <p class="mb-0">{{ comment.comment }}</p>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="alert alert-info">No comments yet. Be the first to comment!</div>
+                    {% endfor %}
+
+  
             </article>
         </div>
         <!-- Side widgets-->

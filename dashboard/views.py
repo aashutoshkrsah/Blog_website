@@ -4,9 +4,12 @@ from .forms import CategoryForm, AddPostForm, AddUserForm
 from django.utils.text import slugify
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
 
 # Create your views here.
 
+@login_required(login_url=reverse_lazy('login'))
 def dashboard(request):
     blogs_count = Blogs.objects.all().count()
     categories_count = Category.objects.all().count()
