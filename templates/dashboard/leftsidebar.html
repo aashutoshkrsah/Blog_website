@@ -7,13 +7,18 @@
         <a class="nav-link text-dark fw-semibold mb-3 rounded text-center shadow-sm {% if request.path == '/dashboard/' %}bg-warning{% endif %}" href="{% url 'dashboard' %}">
             Dashboard
         </a>
+        {% if perms.auth.view_user %}
+            <a class="nav-link text-dark fw-semibold mb-3 rounded text-center shadow-sm {% if '/users/' in request.path %}bg-warning{% endif %}" href="{% url 'users' %}">
+                Users
+            </a>
+        {% endif %}
         <a class="nav-link text-dark fw-semibold mb-3 rounded text-center shadow-sm {% if '/categories/' in request.path %}bg-warning{% endif %}" href="{% url 'categories' %}">
             Categories
         </a>
-        <a class="nav-link text-dark fw-semibold mb-3 rounded text-center shadow-sm {% if '/post/' in request.path %}bg-warning{% endif %}" href="{% url 'dashboard' %}">
-            Post
+        <a class="nav-link text-dark fw-semibold mb-3 rounded text-center shadow-sm {% if '/posts/' in request.path %}bg-warning{% endif %}" href="{% url 'posts' %}">
+            Posts
         </a>
-        <a class="nav-link text-dark fw-semibold rounded text-center shadow-sm {% if '/logout/' in request.path %}bg-warning{% endif %}" href="{% url 'dashboard' %}">
+        <a class="nav-link text-dark fw-semibold rounded text-center shadow-sm {% if '/logout/' in request.path %}bg-warning{% endif %}" href="{% url 'logout' %}">
             Logout
         </a>
     </div>

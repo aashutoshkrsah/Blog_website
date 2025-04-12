@@ -289,6 +289,16 @@ body {
   color: #727272;
 }
 
+/* css for animation */
+.fade-out {
+  transition: opacity 1s ease-out;
+  opacity: 1;
+  display: inline-block; /* Makes the message take only the space it needs */
+}
+
+.fade-out.hide {
+  opacity: 0;
+}
 /*
  * Footer
  */
