@@ -1,20 +1,74 @@
-{% extends "./base/base.html" %}
+{% extends "base/base.html" %}
 
-{% block content  %}
+{% block content %}
 
-<h3 class="text-uppercase text-warning font-weight-bold custom-line-spacing p-4">Search Keyword - {{keyword}}
-</h3>
+<!-- Category Heading -->
+<div class="container mb-4">
+  <div class="card bg-warning text-white text-center shadow-sm">
+    <div class="card-body">
+      <h3 class="text-uppercase fw-bold mb-0">Search Keyword - {{ keyword }}</h3>
+    </div>
+  </div>
+</div>
 
+<!-- Main Content -->
 <main role="main" class="container p-0">
   <div class="row">
-    <div class="col-md-8 blog-main">
-      {% for i in blog %}
-        <div class="blog-post">
-          <h3 class="post-title"><a href="{% url "blogs" i.slug %}">{{ i.title }}</a></h3>
-          <small class="post-meta text-muted">{{ i.created_at|timesince }} ago | {{ i.author }}</small>
-          <p class="card-text">{{ i.short_description | truncatewords:15 }}</p>
-        </div>
-      {% endfor %}
-    </div>
+    <!-- Blog Posts -->
+    <div class="col-md-12 blog-main">
+      {% if blog %}
+        {% for i in blog %}
+          <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+              <h4 class="card-title">
+                <a href="{% url 'blogs' i.slug %}" class="text-decoration-none">{{ i.title }}</a>
+              </h4>
+              <small class="text-muted">{{ i.created_at|timesince }} ago | {{ i.author }}</small>
+              <p class="card-text mt-2">{{ i.short_description|truncatewords:15 }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="alert alert-info">No posts found for keyword "{{ keyword }}".</div>
+      {% endif %}
 
-{% endblock  %}
+      <!-- Pagination -->
+      <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+          {% if blog.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?keyword={{ keyword }}&page=1">« First</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?keyword={{ keyword }}&page={{ blog.previous_page_number }}">‹ Prev</a>
+            </li>
+          {% endif %}
+
+          {% for num in blog.paginator.page_range %}
+            {% if num >= blog.number|add:'-2' and num <= blog.number|add:'2' %}
+              {% if blog.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+              {% else %}
+                <li class="page-item"><a class="page-link" href="?keyword={{ keyword }}&page={{ num }}">{{ num }}</a></li>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+
+          {% if blog.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?keyword={{ keyword }}&page={{ blog.next_page_number }}">Next ›</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?keyword={{ keyword }}&page={{ blog.paginator.num_pages }}">Last »</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</main>
+
+{% endblock %}
+
+
+

@@ -17,5 +17,6 @@ urlpatterns = [
     path('users/', users, name='users'),
     path('users/add', add_users, name='add_users'),
     path('users/edit/<int:pk>', edit_users, name='edit_users'),
+    path('users/<int:pk>/password/', change_user_password, name='password'),
     path('users/delete/<int:pk>', delete_users, name='delete_users'),
 ]

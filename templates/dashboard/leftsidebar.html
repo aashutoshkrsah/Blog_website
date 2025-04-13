@@ -15,11 +15,9 @@
                 Users
             </a>
         {% endif %}
-        {% if perms.auth.view_user %}
             <a class="nav-link text-dark fw-semibold mb-3 rounded text-center shadow-sm {% if '/categories/' in request.path %}bg-warning{% endif %}" href="{% url 'categories' %}">
                 Categories
             </a>
-        {% endif %}
         {% if perms.auth.view_user %}
             <a class="nav-link text-dark fw-semibold mb-3 rounded text-center shadow-sm {% if '/posts/' in request.path %}bg-warning{% endif %}" href="{% url 'posts' %}">
                 Posts

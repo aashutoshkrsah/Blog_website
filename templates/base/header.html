@@ -25,15 +25,39 @@
                 <button class="btn btn-primary" id="button-search" type="submit">Go!</button>
             </div>
             </form>
-          </div>
-          <div class="col-4 d-flex justify-content-end align-items-center">
-            {% if not user.is_authenticated %}
-            <a class="btn btn-sm btn-warning" href="{% url 'login' %}">Login</a> &nbsp;
-            <a class="btn btn-sm btn-outline-secondary" href="{% url "register" %}">Register</a>
-            {% else %}
-            <span><a class="btn btn-sm btn-warning" href="{% url 'dashboard' %} ">Dashboard</a></span> &nbsp;
-            <span><a class="btn btn-sm btn-warning" href="{% url 'logout' %}">Logout</a></span> &nbsp;
-            {% endif %}
+              {% comment %} messages {% endcomment %}
+
+              {% if messages %}
+              {% for message in messages %}
+                  <div class="alert alert-success width-auto fade-out" id="success-message">
+                      {{ message }}
+                  </div>
+              {% endfor %}
+          
+          
+          
+              <script type="text/javascript">
+                setTimeout(function() {
+                    var message = document.getElementById('success-message');
+                    if (message) {
+                        message.classList.add('hide');  // Triggers fade out
+                        setTimeout(function() {
+                            message.style.display = 'none';  // Remove from layout after fade
+                        }, 1000); // Wait for fade to complete before hiding
+                    }
+                }, 1000); // Start fade after 1 seconds
+              </script>
+          {% endif %}
+            </div>
+            <div class="col-4 d-flex justify-content-end align-items-center">
+              {% if not user.is_authenticated %}
+              <a class="btn btn-sm btn-warning" href="{% url 'login' %}">Login</a> &nbsp;
+              <a class="btn btn-sm btn-outline-secondary" href="{% url "register" %}">Register</a>
+              {% else %}
+              <span class="d-inline-block p-2 bg-primary text-white rounded shadow-sm"> Hello, {{ user }} </span> &nbsp &nbsp;
+              <span><a class="btn btn-sm btn-warning" href="{% url 'dashboard' %} ">Dashboard</a></span> &nbsp;
+              <span><a class="btn btn-sm btn-warning" href="{% url 'logout' %}">Logout</a></span> &nbsp;
+              {% endif %}
           </div>
         </div>
       </header>
