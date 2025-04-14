@@ -251,8 +251,8 @@ def edit_users(request, pk):
         messages.error(request, "You are not authorized to edit users.")
         return redirect('dashboard')
 
-    # Only Manager or Superuser can edit users
-    if not (is_manager(request.user) or is_superuser(request.user)):
+    # Only Superuser can edit users
+    if not (is_superuser(request.user)):
         messages.error(request, "Only Managers and Superusers can edit users.")
         return redirect('dashboard')
 
@@ -299,9 +299,9 @@ def change_user_password(request, pk):
 @login_required(login_url=reverse_lazy('login'))
 def delete_users(request, pk):
     """
-    Allows only Superuser and Manager to delete users.
+    Allows only Superuser to delete users.
     """
-    if not (is_superuser(request.user) or is_manager(request.user)):
+    if not (is_superuser(request.user)):
         messages.error(request, "You are not authorized to delete users.")
         return redirect('users')
 
