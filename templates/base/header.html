@@ -54,9 +54,20 @@
               <a class="btn btn-sm btn-warning" href="{% url 'login' %}">Login</a> &nbsp;
               <a class="btn btn-sm btn-outline-secondary" href="{% url "register" %}">Register</a>
               {% else %}
-              <span class="d-inline-block p-2 bg-primary text-white rounded shadow-sm"> Hello, {{ user }} </span> &nbsp &nbsp;
+              <span><a class="btn btn-sm btn-primary" href="">{{user}}</a></span> &nbsp;
+              <span>
+                <a class="btn btn-sm btn-success" href="">
+                    {% if user.groups.all %}
+                        {% for group in user.groups.all %}
+                            {{ group.name }} 
+                        {% endfor %}
+                    {% else %}
+                        Reader
+                    {% endif %}
+                </a>
+            </span> &nbsp;          
               <span><a class="btn btn-sm btn-warning" href="{% url 'dashboard' %} ">Dashboard</a></span> &nbsp;
-              <span><a class="btn btn-sm btn-warning" href="{% url 'logout' %}">Logout</a></span> &nbsp;
+              <span><a class="btn btn-sm btn-danger" href="{% url 'logout' %}">Logout</a></span> &nbsp;
               {% endif %}
           </div>
         </div>

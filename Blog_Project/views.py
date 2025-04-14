@@ -71,7 +71,7 @@ def login(request):
             # If authentication is successful
             if user is not None:
                 auth.login(request, user)  # Log the user in
-                return redirect('dashboard')  # Redirect to the dashboard after successful login
+                return redirect('home')  # Redirect to the dashboard after successful login
     else:
         form = AuthenticationForm()  # Initialize an empty form if it's a GET request
     

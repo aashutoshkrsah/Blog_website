@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
-from utils.permissions import is_reader, is_manager, is_superuser
+from utils.permissions import is_reader, is_manager, is_superuser, is_editor
 
 # Create your views here.
 
@@ -22,6 +22,12 @@ def dashboard(request):
         messages.error(request, "You do not have permission to view this page.")
         return redirect('home')  # Redirect to a safe page like the homepage or login
     
+    # Check if the user is neither an Editor, Manager, nor Superuser
+    if not (is_editor(request.user) or is_manager(request.user) or is_superuser(request.user)):
+        # If the user is not an Editor, Manager, or Superuser, show a permission error and redirect
+        messages.error(request, "You do not have permission to view this page.")
+        return redirect('home')  # Redirect to a safe page like the homepage or login
+    
     # Fetch the counts of blogs and categories for the dashboard
     blogs_count = Blogs.objects.all().count()
     categories_count = Category.objects.all().count()
@@ -32,6 +38,7 @@ def dashboard(request):
     # Render the dashboard template with the context
     return render(request, 'dashboard/dashboard.html', context)
 
+@login_required(login_url=reverse_lazy('login'))
 def categories(request):
     # Check if the user belongs to the "Reader" group
     if is_reader(request.user):
@@ -42,6 +49,7 @@ def categories(request):
     # If the user is not a Reader, render the categories page
     return render(request, 'dashboard/categories.html')
 
+@login_required(login_url=reverse_lazy('login'))
 def add_categories(request):
     # Check if the user is in the "Reader" group
     if is_reader(request.user):
@@ -64,7 +72,7 @@ def add_categories(request):
             
         
 
-
+@login_required(login_url=reverse_lazy('login'))
 def edit_categories(request, pk):
     # Fetch the category to be edited
     category = get_object_or_404(Category, pk=pk)
@@ -88,7 +96,7 @@ def edit_categories(request, pk):
     context = {'form': form}
     return render(request, 'dashboard/edit_categories.html', context)
 
-
+@login_required(login_url=reverse_lazy('login'))
 def delete_categories(request, pk):
     # Fetch the category to be deleted
     category = get_object_or_404(Category, pk=pk)
@@ -104,6 +112,7 @@ def delete_categories(request, pk):
     messages.success(request, 'Category has been deleted successfully!')
     return redirect('categories')  # Redirect to the categories page after successful deletion
 
+@login_required(login_url=reverse_lazy('login'))
 def posts(request):
     # Check if the user is allowed to view the posts
     if is_reader(request.user):
@@ -155,7 +164,7 @@ def edit_posts(request, pk):
     # Check if the logged-in user is the author of the post
     if post.author != request.user:
         # If the user is not the author, display an error message
-        messages.error(request, "You are not authorized to edit this post.")
+        messages.error(request, "Only Author can edit this Post!")
         return redirect('posts')  # Redirect to the list of posts if unauthorized
     
     if request.method == 'POST':
@@ -204,7 +213,7 @@ def users(request):
 
     # Allow only Manager and Superuser to access
     if not (is_manager(request.user) or is_superuser(request.user)):
-        messages.error(request, "Only Managers and Superusers can view users.")
+        messages.error(request, "You are not authorized to view users.")
         return redirect('dashboard')
 
     users = User.objects.all()
