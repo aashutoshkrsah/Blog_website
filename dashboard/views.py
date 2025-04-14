@@ -23,7 +23,7 @@ def dashboard(request):
         return redirect('home')  # Redirect to a safe page like the homepage or login
     
     # Check if the user is neither an Editor, Manager, nor Superuser
-    if not (is_editor(request.user) or is_manager(request.user) or is_superuser(request.user)):
+    if not (is_editor(request.user) or is_manager(request.user) or is_superuser(request.user) or request.user.is_superuser):
         # If the user is not an Editor, Manager, or Superuser, show a permission error and redirect
         messages.error(request, "You do not have permission to view this page.")
         return redirect('home')  # Redirect to a safe page like the homepage or login
@@ -102,7 +102,7 @@ def delete_categories(request, pk):
     category = get_object_or_404(Category, pk=pk)
     
     # Check if the user is in the "Manager" or "Superuser" group
-    if not (is_manager(request.user) or is_superuser(request.user)):
+    if not (is_manager(request.user) or is_superuser(request.user) or request.user.is_superuser):
         # If the user is not a Manager or Superuser, deny access and show a message
         messages.error(request, "You do not have permission to delete this category.")
         return redirect('categories')  # Redirect to the categories page
@@ -194,7 +194,7 @@ def delete_posts(request, pk):
     post = get_object_or_404(Blogs, pk=pk)
 
     # Check if the logged-in user is the author of the post or has Manager/Superuser permissions
-    if post.author != request.user and not (is_manager(request.user) or is_superuser(request.user)):
+    if post.author != request.user and not (is_manager(request.user) or is_superuser(request.user) or request.user.is_superuser):
         # If the user is not the author, manager, or superuser, show an error message
         messages.error(request, "You are not authorized to delete this post.")
         return redirect('posts')  # Redirect to the list of posts if unauthorized
@@ -212,7 +212,7 @@ def users(request):
         return redirect('dashboard')
 
     # Allow only Manager and Superuser to access
-    if not (is_manager(request.user) or is_superuser(request.user)):
+    if not (is_manager(request.user) or is_superuser(request.user) or request.user.is_superuser):
         messages.error(request, "You are not authorized to view users.")
         return redirect('dashboard')
 
@@ -228,7 +228,7 @@ def add_users(request):
         return redirect('dashboard')
 
     # Allow only Manager and Superuser
-    if not (is_manager(request.user) or is_superuser(request.user)):
+    if not (is_manager(request.user) or is_superuser(request.user) or request.user.is_superuser):
         messages.error(request, "Only Managers and Superusers can add users.")
         return redirect('dashboard')
 
@@ -252,7 +252,7 @@ def edit_users(request, pk):
         return redirect('dashboard')
 
     # Only Superuser can edit users
-    if not (is_superuser(request.user)):
+    if not (is_superuser(request.user) or request.user.is_superuser):
         messages.error(request, "Only Managers and Superusers can edit users.")
         return redirect('dashboard')
 
@@ -277,7 +277,7 @@ def change_user_password(request, pk):
     Only Superuser and Manager can update another user's password.
     """
     # Check if the user is allowed
-    if not (is_superuser(request.user) or is_manager(request.user)):
+    if not (is_superuser(request.user) or request.user.is_superuser or is_manager(request.user)):
         messages.error(request, "You are not authorized to change user passwords.")
         return redirect('dashboard')  # or wherever your main dashboard is
 
@@ -301,7 +301,7 @@ def delete_users(request, pk):
     """
     Allows only Superuser to delete users.
     """
-    if not (is_superuser(request.user)):
+    if not (is_superuser(request.user) or request.user.is_superuser):
         messages.error(request, "You are not authorized to delete users.")
         return redirect('users')
 
