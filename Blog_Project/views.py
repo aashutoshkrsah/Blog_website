@@ -13,7 +13,7 @@ def home(request):
     categories = Category.objects.all()
 
     # Fetch featured posts, ordered by most recent
-    featured_post = Blogs.objects.filter(is_featured=True).order_by('-created_at')
+    featured_post = Blogs.objects.filter(is_featured=True).order_by('-created_at')[:4]
 
     # Fetch non-featured (recent) published posts, ordered by most recent
     posts = Blogs.objects.filter(is_featured=False, status='published').order_by('-created_at')

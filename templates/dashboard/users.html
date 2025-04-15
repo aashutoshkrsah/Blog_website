@@ -65,7 +65,9 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if user.groups.all %}
+                        {% if user.is_superuser %}
+                            Superuser
+                        {% elif user.groups.all %}
                             {% for group in user.groups.all %}
                                 {{ group.name }}{% if not forloop.last %}, {% endif %}
                             {% endfor %}
@@ -73,6 +75,7 @@
                             None
                         {% endif %}
                     </td>
+                    
                     <td>
                         {% if user.is_staff %}
                             <i class="fa fa-check text-success"></i>
